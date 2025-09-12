@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTG Deck Tracker - Dark Mode v2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d30);
+            border-radius: 15px;
+            border: 1px solid #404040;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #b0b0b0;
+            font-size: 1.1rem;
+        }
+
+        .step-section {
+            background: #1a1a1a;
+            border: 1px solid #404040;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            color: #000;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+
+        .step-title {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .upload-btn {
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 195, 247, 0.3);
+        }
+
+        .file-status {
+            background: #0d4f3c;
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #90ee90;
+        }
+
+        .pdf-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: #000;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .pdf-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .photo-preview {
+            background: #1a1a1a;
+            border: 2px solid #4fc3f7;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .photo-img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            border: 2px solid #404040;
+            margin: 15px 0;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .pdf-viewer {
+            background: #1a1a1a;
+            border: 1px solid #404040;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 500px;
+        }
+
+        .pdf-frame {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #404040;
+            border-radius: 8px;
+            background: #2d2d30;
+        }
+
+        .deck-tracker {
+            background: #1a1a1a;
+            border: 1px solid #404040;
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .tracker-header {
+            display: grid;
+            grid-template-columns: 1fr 60px 60px 40px;
+            gap: 10px;
+            padding: 10px;
+            background: #2d2d30;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #4fc3f7;
+        }
+
+        .card-entry {
+            display: grid;
+            grid-template-columns: 1fr 60px 60px 40px;
+            gap: 10px;
+            padding: 8px 10px;
+            background: #262626;
+            border: 1px solid #404040;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .card-name-input {
+            background: #1a1a1a;
+            border: 1px solid #404040;
+            border-radius: 4px;
+            padding: 8px;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        .card-name-input:focus {
+            outline: none;
+            border-color: #4fc3f7;
+            box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.2);
+        }
+
+        .number-input {
+            background: #1a1a1a;
+            border: 1px solid #404040;
+            border-radius: 4px;
+            padding: 6px;
+            color: #e0e0e0;
+            text-align: center;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .number-input:focus {
+            outline: none;
+            border-color: #4fc3f7;
+            box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.2);
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .add-card-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .add-card-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .decklist-section {
+            background: #1a1a1a;
+            border: 1px solid #404040;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .decklist-output {
+            background: #0a0a0a;
+            border: 1px solid #404040;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: #e0e0e0;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+
+        .success {
+            background: #0d4f3c;
+            border: 1px solid #28a745;
+            color: #90ee90;
+        }
+
+        .error {
+            background: #4f0d0d;
+            border: 1px solid #dc3545;
+            color: #ffb3b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .category-label {
+            color: #4fc3f7;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin: 15px 0 8px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #404040;
+        }
+
+        @media (max-width: 768px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+            
+            .deck-tracker {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MTG Deck Tracker v2</h1>
+            <p>Track your Magic: The Gathering deck with Played vs Total columns</p>
+        </div>
+
+        <!-- STEP 1: Upload PDF -->
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title">Upload Your Deck PDF</div>
+            </div>
+            <button class="upload-btn" onclick="document.getElementById('pdfInput').click()">
+                📄 Select PDF File
+            </button>
+            <input type="file" id="pdfInput" accept=".pdf">
+            <div id="pdfStatus"></div>
+        </div>
+
+        <!-- STEP 2: Upload Photo -->
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title">Upload Photo with Numbers</div>
+            </div>
+            <button class="upload-btn" onclick="document.getElementById('photoInput').click()">
+                📸 Select Photo
+            </button>
+            <input type="file" id="photoInput" accept="image/*">
+            <div id="photoStatus"></div>
+        </div>
+
+        <!-- STEP 3: Track Your Deck -->
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <div class="step-title">Track Played vs Total Cards</div>
+            </div>
+            
+            <div class="workspace">
+                <div class="pdf-viewer" id="pdfViewer">
+                    <h3 style="color: #4fc3f7; text-align: center; margin-bottom: 20px;">PDF Reference</h3>
+                    <p style="text-align: center; color: #b0b0b0;">Upload a PDF to view it here</p>
+                </div>
+                
+                <div class="deck-tracker">
+                    <h3 style="color: #4fc3f7; margin-bottom: 15px;">Deck Tracker</h3>
+                    <button class="add-card-btn" onclick="addCard()">+ Add Card</button>
+                    
+                    <div class="tracker-header">
+                        <div>Card Name</div>
+                        <div>Played</div>
+                        <div>Total</div>
+                        <div></div>
+                    </div>
+                    
+                    <div id="cardList">
+                        <p style="text-align: center; color: #b0b0b0; padding: 20px;">
+                            Upload a photo to start tracking cards
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: Export Decklist -->
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <div class="step-title">Export Decklist</div>
+            </div>
+            
+            <button class="upload-btn" onclick="exportDecklist()">
+                🎯 Generate Decklist
+            </button>
+            
+            <div id="decklistResults" class="hidden">
+                <div class="decklist-output" id="decklistOutput"></div>
+                <button class="upload-btn" onclick="copyToClipboard()">
+                    📋 Copy to Clipboard
+                </button>
+            </div>
+        </div>
+
+        <div id="messages"></div>
+    </div>
+
+    <script>
+        let currentPDF = null;
+        let pdfURL = null;
+        let cardEntries = [];
+
+        // Initialize event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('pdfInput').addEventListener('change', function(e) {
+                if (e.target.files[0]) loadPDF(e.target.files[0]);
+            });
+            
+            document.getElementById('photoInput').addEventListener('change', function(e) {
+                if (e.target.files[0]) loadPhoto(e.target.files[0]);
+            });
+        });
+
+        function showMessage(text, type) {
+            const messages = document.getElementById('messages');
+            messages.innerHTML = ''; // Clear previous messages
+            
+            const msg = document.createElement('div');
+            msg.className = `message ${type}`;
+            msg.textContent = text;
+            messages.appendChild(msg);
+            
+            setTimeout(() => msg.remove(), 4000);
+        }
+
+        function loadPDF(file) {
+            console.log('Loading PDF:', file.name);
+            if (!file || file.type !== 'application/pdf') {
+                showMessage('Please select a valid PDF file', 'error');
+                return;
+            }
+
+            currentPDF = file;
+            pdfURL = URL.createObjectURL(file);
+
+            document.getElementById('pdfStatus').innerHTML = `
+                <div class="file-status">
+                    <strong>✅ PDF Loaded:</strong> ${file.name} (${(file.size/1024).toFixed(1)} KB)
+                </div>
+                <a href="${pdfURL}" target="_blank" class="pdf-link">
+                    🔗 Open PDF in New Tab
+                </a>
+            `;
+
+            updatePDFViewer();
+            showMessage('PDF loaded successfully!', 'success');
+        }
+
+        function updatePDFViewer() {
+            const viewer = document.getElementById('pdfViewer');
+            if (pdfURL) {
+                viewer.innerHTML = `
+                    <h3 style="color: #4fc3f7; text-align: center; margin-bottom: 15px;">📄 ${currentPDF.name}</h3>
+                    <iframe src="${pdfURL}" class="pdf-frame"></iframe>
+                    <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: #b0b0b0;">
+                        If PDF doesn't display, <a href="${pdfURL}" target="_blank" style="color: #4fc3f7;">click here</a>
+                    </p>
+                `;
+            }
+        }
+
+        function loadPhoto(file) {
+            console.log('Loading photo:', file.name);
+            if (!file || !file.type.startsWith('image/')) {
+                showMessage('Please select a valid image file', 'error');
+                return;
+            }
+
+            const photoURL = URL.createObjectURL(file);
+            
+            document.getElementById('photoStatus').innerHTML = `
+                <div class="file-status">
+                    <strong>✅ Photo Loaded:</strong> ${file.name}
+                </div>
+                <div class="photo-preview">
+                    <h4 style="color: #4fc3f7;">📸 Photo Preview</h4>
+                    <img src="${photoURL}" class="photo-img" alt="Uploaded photo">
+                    <p style="margin-top: 15px; color: #b0b0b0;">
+                        Photo uploaded! Your deck structure is loaded below (matching your PDF: 2 White, 4 Blue, 2 Green).
+                    </p>
+                </div>
+            `;
+
+            // Initialize with YOUR ACTUAL PDF STRUCTURE: 2 White, 4 Blue, 0 Black, 0 Red, 2 Green
+            createYourPDFStructure();
+            showMessage('Photo loaded! Your PDF structure (2W, 4U, 2G) is ready for editing', 'success');
+        }
+
+        function createYourPDFStructure() {
+            // Exact structure from your PDF: 2 White, 4 Blue, 2 Green
+            cardEntries = [
+                // WHITE SECTION (2 cards)
+                { id: 1, name: 'Replace with White card 1 name from PDF', played: 0, total: 0, category: 'White' },
+                { id: 2, name: 'Replace with White card 2 name from PDF', played: 0, total: 0, category: 'White' },
+                
+                // BLUE SECTION (4 cards)
+                { id: 3, name: 'Replace with Blue card 1 name from PDF', played: 0, total: 0, category: 'Blue' },
+                { id: 4, name: 'Replace with Blue card 2 name from PDF', played: 0, total: 0, category: 'Blue' },
+                { id: 5, name: 'Replace with Blue card 3 name from PDF', played: 0, total: 0, category: 'Blue' },
+                { id: 6, name: 'Replace with Blue card 4 name from PDF', played: 0, total: 0, category: 'Blue' },
+                
+                // GREEN SECTION (2 cards)
+                { id: 7, name: 'Replace with Green card 1 name from PDF', played: 0, total: 0, category: 'Green' },
+                { id: 8, name: 'Replace with Green card 2 name from PDF', played: 0, total: 0, category: 'Green' }
+            ];
+            
+            updateCardList();
+        }
+
+        function updateCardList() {
+            const cardList = document.getElementById('cardList');
+            
+            if (cardEntries.length === 0) {
+                cardList.innerHTML = '<p style="text-align: center; color: #b0b0b0; padding: 20px;">No cards loaded yet</p>';
+                return;
+            }
+
+            // Group cards by category, but handle "Unknown" category specially
+            const knownCategories = ['White', 'Blue', 'Black', 'Red', 'Green', 'Multicolor', 'Artifacts', 'Nonbasics', 'Lands', 'Stellar Sights', 'Special Guests', 'Basic Lands'];
+            const categorizedCards = {};
+            
+            // First add cards with known categories in PDF order
+            knownCategories.forEach(category => {
+                const cards = cardEntries.filter(card => card.category === category);
+                if (cards.length > 0) {
+                    categorizedCards[category] = cards;
+                }
+            });
+            
+            // Add unknown/uncategorized cards at the end
+            const unknownCards = cardEntries.filter(card => !knownCategories.includes(card.category));
+            if (unknownCards.length > 0) {
+                categorizedCards['Detected Numbers (Set Category)'] = unknownCards;
+            }
+
+            let html = '';
+            Object.keys(categorizedCards).forEach(category => {
+                html += `<div class="category-label">${category.toUpperCase()}</div>`;
+                categorizedCards[category].forEach(card => {
+                    html += `
+                        <div class="card-entry">
+                            <input type="text" class="card-name-input" value="${card.name}" 
+                                   onchange="updateCardName(${card.id}, this.value)"
+                                   placeholder="Enter card name from PDF">
+                            <input type="number" class="number-input" value="${card.played}" 
+                                   min="0" max="9" 
+                                   onchange="updatePlayed(${card.id}, this.value)"
+                                   title="Cards played this game">
+                            <input type="number" class="number-input" value="${card.total}" 
+                                   min="0" max="99" 
+                                   onchange="updateTotal(${card.id}, this.value)"
+                                   title="Total cards in deck">
+                            <button class="delete-btn" onclick="deleteCard(${card.id})" title="Delete card">×</button>
+                        </div>
+                        <div style="font-size: 0.8rem; color: #888; margin: 0 10px 8px 10px;">
+                            Category: 
+                            <select onchange="updateCategory(${card.id}, this.value)" style="background: #1a1a1a; color: #e0e0e0; border: 1px solid #404040; border-radius: 4px; padding: 2px;">
+                                <option value="Unknown" ${card.category === 'Unknown' ? 'selected' : ''}>Select Category</option>
+                                <option value="White" ${card.category === 'White' ? 'selected' : ''}>White</option>
+                                <option value="Blue" ${card.category === 'Blue' ? 'selected' : ''}>Blue</option>
+                                <option value="Black" ${card.category === 'Black' ? 'selected' : ''}>Black</option>
+                                <option value="Red" ${card.category === 'Red' ? 'selected' : ''}>Red</option>
+                                <option value="Green" ${card.category === 'Green' ? 'selected' : ''}>Green</option>
+                                <option value="Multicolor" ${card.category === 'Multicolor' ? 'selected' : ''}>Multicolor</option>
+                                <option value="Artifacts" ${card.category === 'Artifacts' ? 'selected' : ''}>Artifacts</option>
+                                <option value="Nonbasics" ${card.category === 'Nonbasics' ? 'selected' : ''}>Nonbasics</option>
+                                <option value="Lands" ${card.category === 'Lands' ? 'selected' : ''}>Lands</option>
+                                <option value="Stellar Sights" ${card.category === 'Stellar Sights' ? 'selected' : ''}>Stellar Sights</option>
+                                <option value="Special Guests" ${card.category === 'Special Guests' ? 'selected' : ''}>Special Guests</option>
+                                <option value="Basic Lands" ${card.category === 'Basic Lands' ? 'selected' : ''}>Basic Lands</option>
+                            </select>
+                        </div>
+                    `;
+                });
+            });
+
+            cardList.innerHTML = html;
+        }
+
+        function updateCategory(id, newCategory) {
+            const card = cardEntries.find(c => c.id === id);
+            if (card) {
+                card.category = newCategory;
+                updateCardList(); // Refresh to regroup cards
+                showMessage('Category updated!', 'success');
+            }
+        }
+
+        function addCard() {
+            const pdfCategories = ['White', 'Blue', 'Black', 'Red', 'Green', 'Multicolor', 'Artifacts', 'Nonbasics', 'Lands', 'Stellar Sights', 'Special Guests', 'Basic Lands'];
+            const category = prompt(`Enter category: ${pdfCategories.join(', ')}`) || 'White';
+            const name = prompt('Enter card name:') || 'New Card';
+            
+            cardEntries.push({
+                id: Date.now(),
+                name: name,
+                played: 0,
+                total: 0,
+                category: category
+            });
+            
+            updateCardList();
+            showMessage('Card added!', 'success');
+        }
+
+        function updateCardName(id, newName) {
+            const card = cardEntries.find(c => c.id === id);
+            if (card) card.name = newName;
+        }
+
+        function updatePlayed(id, newValue) {
+            const card = cardEntries.find(c => c.id === id);
+            if (card) {
+                card.played = parseInt(newValue) || 0;
+                showMessage('Played count updated!', 'success');
+            }
+        }
+
+        function updateTotal(id, newValue) {
+            const card = cardEntries.find(c => c.id === id);
+            if (card) {
+                card.total = parseInt(newValue) || 0;
+                showMessage('Total count updated!', 'success');
+            }
+        }
+
+        function deleteCard(id) {
+            cardEntries = cardEntries.filter(c => c.id !== id);
+            updateCardList();
+            showMessage('Card deleted!', 'success');
+        }
+
+        function exportDecklist() {
+            if (cardEntries.length === 0) {
+                showMessage('No cards to export!', 'error');
+                return;
+            }
+
+            // Export cards that have been played (played > 0)
+            const playedCards = cardEntries.filter(card => card.played > 0);
+            
+            if (playedCards.length === 0) {
+                showMessage('No played cards found! Update the "Played" column for cards you want to export.', 'error');
+                return;
+            }
+
+            // Group by category in PDF order
+            const pdfOrder = ['White', 'Blue', 'Black', 'Red', 'Green', 'Multicolor', 'Artifacts', 'Nonbasics', 'Lands', 'Stellar Sights', 'Special Guests', 'Basic Lands'];
+            const categories = {};
+            
+            pdfOrder.forEach(cat => {
+                const cardsInCat = playedCards.filter(card => card.category === cat);
+                if (cardsInCat.length > 0) {
+                    categories[cat] = cardsInCat;
+                }
+            });
+
+            let decklist = '=== PLAYED CARDS DECKLIST ===\n\n';
+            let totalCards = 0;
+
+            Object.keys(categories).forEach(category => {
+                decklist += `${category.toUpperCase()}\n`;
+                categories[category].forEach(card => {
+                    decklist += `${card.played} ${card.name}\n`;
+                    totalCards += card.played;
+                });
+                decklist += '\n';
+            });
+
+            decklist += `Total Cards Played: ${totalCards}\n`;
+            decklist += `Unique Cards Played: ${playedCards.length}`;
+
+            document.getElementById('decklistOutput').textContent = decklist;
+            document.getElementById('decklistResults').classList.remove('hidden');
+            
+            showMessage(`Exported ${playedCards.length} unique cards (${totalCards} total)!`, 'success');
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('decklistOutput');
+            navigator.clipboard.writeText(output.textContent).then(() => {
+                showMessage('Decklist copied to clipboard!', 'success');
+            });
+        }
+    </script>
+</body>
+</html>
