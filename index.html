@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Purple Handwriting OCR - MTG</title>
+    <title>Edge of Eternities Draft Tracker</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
     <style>
         * {
@@ -324,8 +324,9 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>💜 Simple Purple Handwriting OCR</h1>
+            <h1>💜 Edge of Eternities Draft Tracker</h1>
             <p>Upload photo → Detect handwritten numbers → Fill deck automatically</p>
+            <p style="color: #e0aaff; margin-top: 10px;">Pro Tour EOE: Draft 1 - Official Card Pool</p>
         </div>
 
         <!-- Upload -->
@@ -465,6 +466,42 @@
             </div>
 
             <div class="section">
+                <div class="section-header">🏛️ NONBASIC LANDS</div>
+                <div class="section-content">
+                    <div class="card-headers">
+                        <div>Card</div>
+                        <div>Played</div>
+                        <div>Total</div>
+                    </div>
+                    <div id="nonbasicCards"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">⭐ STELLAR SIGHTS</div>
+                <div class="section-content">
+                    <div class="card-headers">
+                        <div>Card</div>
+                        <div>Played</div>
+                        <div>Total</div>
+                    </div>
+                    <div id="stellarCards"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">⚫ COLORLESS</div>
+                <div class="section-content">
+                    <div class="card-headers">
+                        <div>Card</div>
+                        <div>Played</div>
+                        <div>Total</div>
+                    </div>
+                    <div id="colorlessCards"></div>
+                </div>
+            </div>
+
+            <div class="section">
                 <div class="section-header">🌍 BASIC LANDS</div>
                 <div class="section-content">
                     <div class="card-headers">
@@ -493,13 +530,16 @@
     <script>
         let detectedNumbers = [];
         let deckData = {
-            white: ['Lightning Bolt', 'Shock', 'Fireball', 'Counterspell', 'Negate'],
-            blue: ['Island', 'Mountain', 'Forest', 'Plains', 'Swamp'],
-            black: ['Dark Ritual', 'Doom Blade', 'Terror', 'Corrupt', 'Drain Life'],
-            red: ['Lightning Strike', 'Lava Spike', 'Incinerate', 'Flame Slash', 'Burst Lightning'],
-            green: ['Giant Growth', 'Rampant Growth', 'Naturalize', 'Fog', 'Regenerate'],
-            multicolor: ['Lightning Helix', 'Terminate', 'Putrefy', 'Electrolyze', 'Mortify'],
-            artifacts: ['Sol Ring', 'Mana Vault', 'Chrome Mox', 'Mox Diamond', 'Black Lotus'],
+            white: ['All-Fates Stalker', 'Astelli Reclaimer', 'Auxiliary Boosters', 'Banishing Light', 'Beyond the Quiet', 'Brightspear Zealot', 'Cosmogrand Zenith', 'Dawnstrike Vanguard', 'Dockworker Drone', 'Dual-Sun Adepts', 'Dual-Sun Technique', 'Emergency Eject', 'Exalted Sunborn', 'Exosuit Savior', 'Flight-Deck Coordinator', 'Focus Fire', 'Haliya, Guided by Light', 'Hardlight Containment', 'Honor', 'Honored Knight-Captain', 'Knight Luminary', 'Lightstall Inquisitor', 'Lumen-Class Frigate', 'Luxknight Breacher', 'Pinnacle Starcage', 'Pulsar Squadron Ace', 'Radiant Strike', 'Rayblade Trooper', 'Reroute Systems', 'Rescue Skiff', 'Scout for Survivors', 'Seam Rip', 'The Seriema', 'Squire\'s Lightblade', 'Starfield Shepherd', 'Starfighter Pilot', 'Starport Security', 'Sunstar Chaplain', 'Sunstar Expansionist', 'Sunstar Lightsmith', 'Wedgelight Rammer', 'Weftblade Enhancer', 'Zealous Display'],
+            blue: ['Annul', 'Atomic Microsizer', 'Cerebral Download', 'Cloudsculpt Technician', 'Codecracker Hound', 'Consult the Star Charts', 'Cryogen Relic', 'Cryoshatter', 'Desculpting Blast', 'Divert Disaster', 'Emissary Escort', 'Gigastorm Titan', 'Illvoi Galeblade', 'Illvoi Infiltrator', 'Illvoi Light Jammer', 'Illvoi Operative', 'Lost in Space', 'Mechan Assembler', 'Mechan Navigator', 'Mechan Shieldmate', 'Mechanozoa', 'Mental Modulation', 'Mm\'menon, the Right Hand', 'Moonlit Meditation', 'Mouth of the Storm', 'Nanoform Sentinel', 'Quantum Riddler', 'Scour for Scrap', 'Selfcraft Mechan', 'Sinister Cryologist', 'Specimen Freighter', 'Starbreach Whale', 'Starfield Vocalist', 'Starwinder', 'Steelswarm Operator', 'Synthesizer Labship', 'Tractor Beam', 'Unravel', 'Uthros Psionicist', 'Uthros Scanship', 'Weftwalking'],
+            black: ['Alpharael, Stonechosen', 'Archenemy\'s Charm', 'Beamsaw Prospector', 'Blade of the Swarm', 'Chorale of the Void', 'Comet Crawler', 'Dark Endurance', 'Decode Transmissions', 'Depressurize', 'Dubious Delicacy', 'Elegy Acolyte', 'Embrace Oblivion', 'Entropic Battlecruiser', 'Faller\'s Faithful', 'Fell Gravship', 'Gravblade Heavy', 'Gravkill', 'Gravpack Monoist', 'Hullcarver', 'Hylderblade', 'Hymn of the Faller', 'Insatiable Skittermaw', 'Lightless Evangel', 'Monoist Circuit-Feeder', 'Monoist Sentry', 'Perigee Beckoner', 'Requiem Monolith', 'Scrounge for Eternity', 'Sothera, the Supervoid', 'Sunset Saboteur', 'Susurian Dirgecraft', 'Susurian Voidborn', 'Swarm Culler', 'Temporal Intervention', 'Timeline Culler', 'Tragic Trajectory', 'Umbral Collar Zealot', 'Virus Beetle', 'Voidforged Titan', 'Vote Out', 'Xu-Ifit, Osteoharmonist', 'Zero Point Ballad'],
+            red: ['Bombard', 'Cut Propulsion', 'Debris Field Crusher', 'Devastating Onslaught', 'Drill Too Deep', 'Frontline War-Rager', 'Full Bore', 'Galvanizing Sawship', 'Invasive Maneuvers', 'Kav Landseeker', 'Kavaron Harrier', 'Kavaron Skywarden', 'Kavaron Turbodrone', 'Lithobraking', 'Melded Moxite', 'Memorial Team Leader', 'Memorial Vault', 'Molecular Modifier', 'Nebula Dragon', 'Nova Hellkite', 'Orbital Plunge', 'Oreplate Pangolin', 'Pain for All', 'Plasma Bolt', 'Possibility Technician', 'Red Tiger Mechan', 'Remnant Elemental', 'Rig for War', 'Roving Actuator', 'Ruinous Rampage', 'Rust Harvester', 'Slagdrill Scrapper', 'Systems Override', 'Tannuk, Steadfast Second', 'Terminal Velocity', 'Terrapact Intimidator', 'Territorial Bruntar', 'Vaultguard Trooper', 'Warmaker Gunship', 'Weapons Manufacturing', 'Weftstalker Ardent', 'Zookeeper Mechan'],
+            green: ['Atmospheric Greenhouse', 'Bioengineered Future', 'Biosynthic Burst', 'Blooming Stinger', 'Broodguard Elite', 'Close Encounter', 'Diplomatic Relations', 'Drix Fatemaker', 'Edge Rover', 'Eumidian Terrabotanist', 'Eusocial Engineering', 'Famished Worldsire', 'Frenzied Baloth', 'Fungal Colossus', 'Galactic Wayfarer', 'Gene Pollinator', 'Germinating Wurm', 'Glacier Godmaw', 'Harmonious Grovestrider', 'Hemosymbic Mite', 'Icecave Crasher', 'Icetill Explorer', 'Intrepid Tenderfoot', 'Larval Scoutlander', 'Lashwhip Predator', 'Loading Zone', 'Meltstrider Eulogist', 'Meltstrider\'s Gear', 'Meltstrider\'s Resolve', 'Mightform Harmonizer', 'Ouroboroid', 'Pull Through the Weft', 'Sami\'s Curiosity', 'Seedship Agrarian', 'Seedship Impact', 'Shattered Wings', 'Skystinger', 'Sledge-Class Seedship', 'Tapestry Warden', 'Terrasymbiosis', 'Thawbringer'],
+            multicolor: ['Alpharael, Dreaming Acolyte', 'Biomechan Engineer', 'Biotech Specialist', 'Cosmogoyf', 'Dyadrine, Synthesis Amalgam', 'Genemorph Imago', 'Haliya, Ascendant Cadet', 'Infinite Guideline Station', 'Interceptor Mechan', 'Mm\'menon, Uthros Exile', 'Mutinous Massacre', 'Pinnacle Emissary', 'Ragost, Deft Gastronaut', 'Sami, Ship\'s Engineer', 'Sami, Wildcat Captain', 'Seedship Broodtender', 'Singularity Rupture', 'Space-Time Anomaly', 'Station Monitor', 'Syr Vondam, Sunstar Exemplar', 'Syr Vondam, the Lucent', 'Tannuk, Memorial Ensign'],
+            artifacts: ['All-Fates Scroll', 'Bygone Colossus', 'Chrome Companion', 'Dauntless Scrapbot', 'Dawnsire, Sunstar Dreadnought', 'The Dominion Bracelet', 'The Endstone', 'The Eternity Elevator', 'Extinguisher Battleship', 'Nutrient Block', 'Pinnacle Kill-Ship', 'Survey Mechan', 'Thaumaton Torpedo', 'Thrumming Hivepool', 'Virulent Silencer', 'Wurmwall Sweeper'],
+            nonbasic: ['Adagia, Windswept Bastion', 'Breeding Pool', 'Command Bridge', 'Evendo, Waking Haven', 'Godless Shrine', 'Kavaron, Memorial World', 'Sacred Foundry', 'Secluded Starforge', 'Stomping Ground', 'Susur Secundi, Void Altar', 'Uthros, Titanic Godcore', 'Watery Grave'],
+            stellar: ['Ancient Tomb', 'Blast Zone', 'Blinkmoth Nexus', 'Bonders\' Enclave', 'Cascading Cataracts', 'Cathedral of War', 'Celestial Colonnade', 'Contested War Zone', 'Creeping Tar Pit', 'Crystal Quarry', 'Deserted Temple', 'Dust Bowl', 'Echoing Deeps', 'Eldrazi Temple', 'Endless Sands', 'Gemstone Caverns', 'Grove of the Burnwillows', 'High Market', 'Hissing Quagmire', 'Inkmoth Nexus', 'Inventors\' Fair', 'Lavaclaw Reaches', 'Lotus Field', 'Lumbering Falls', 'Mana Confluence', 'Meteor Crater', 'Mirrorpool', 'Mutavault', 'Mystifying Maze', 'Needle Spires', 'Nesting Grounds', 'Petrified Field', 'Plaza of Heroes', 'Power Depot', 'Raging Ravine', 'Reflecting Pool', 'Scavenger Grounds', 'Shambling Vent', 'Stirring Wildwood', 'Strip Mine', 'Sunken Citadel', 'Swarmyard', 'Terrain Generator', 'Thespian\'s Stage', 'Wandering Fumarole'],
+            colorless: ['Anticausal Vestige', 'Tezzeret, Cruel Captain'],
             basic: ['Plains', 'Island', 'Swamp', 'Mountain', 'Forest']
         };
         let cardValues = {};
@@ -514,7 +554,7 @@
             Object.keys(deckData).forEach(section => {
                 cardValues[section] = {};
                 deckData[section].forEach(card => {
-                    cardValues[section][card] = { played: 0, total: 0 };
+                    cardValues[section][card] = { played: 0, total: 0, autoFilled: false };
                 });
             });
             renderAllSections();
@@ -590,6 +630,13 @@
 
             const sections = Object.keys(cardValues);
             
+            // Reset auto-filled flags
+            Object.keys(cardValues).forEach(section => {
+                Object.keys(cardValues[section]).forEach(card => {
+                    cardValues[section][card].autoFilled = false;
+                });
+            });
+            
             detectedNumbers.forEach((num, index) => {
                 // Pick random section and card
                 const randomSection = sections[Math.floor(Math.random() * sections.length)];
@@ -602,6 +649,9 @@
                 } else {
                     cardValues[randomSection][randomCard].total = num.value;
                 }
+                
+                // Mark as auto-filled for highlighting
+                cardValues[randomSection][randomCard].autoFilled = true;
             });
 
             renderAllSections();
@@ -621,13 +671,14 @@
 
             container.innerHTML = deckData[section].map(card => {
                 const values = cardValues[section][card];
+                const isAutoFilled = values.autoFilled;
                 return `
                     <div class="card-row">
                         <div class="card-name">${card}</div>
-                        <input type="number" class="card-input" value="${values.played}" 
+                        <input type="number" class="card-input ${isAutoFilled ? 'auto-filled' : ''}" value="${values.played}" 
                                min="0" max="9" 
                                onchange="updateCard('${section}', '${card}', 'played', this.value)">
-                        <input type="number" class="card-input" value="${values.total}" 
+                        <input type="number" class="card-input ${isAutoFilled ? 'auto-filled' : ''}" value="${values.total}" 
                                min="0" max="99" 
                                onchange="updateCard('${section}', '${card}', 'total', this.value)">
                     </div>
@@ -637,6 +688,7 @@
 
         function updateCard(section, card, type, value) {
             cardValues[section][card][type] = parseInt(value) || 0;
+            cardValues[section][card].autoFilled = false; // Remove auto-filled status when manually changed
             updateTotals();
         }
 
@@ -664,11 +716,25 @@
 
         function exportDeck() {
             const playedCards = [];
+            const sectionNames = {
+                white: 'WHITE',
+                blue: 'BLUE', 
+                black: 'BLACK',
+                red: 'RED',
+                green: 'GREEN',
+                multicolor: 'MULTICOLOR',
+                artifacts: 'ARTIFACTS',
+                nonbasic: 'NONBASIC LANDS',
+                stellar: 'STELLAR SIGHTS',
+                colorless: 'COLORLESS',
+                basic: 'BASIC LANDS'
+            };
+
             Object.keys(cardValues).forEach(section => {
                 Object.keys(cardValues[section]).forEach(card => {
                     if (cardValues[section][card].played > 0) {
                         playedCards.push({
-                            section: section.toUpperCase(),
+                            section: sectionNames[section] || section.toUpperCase(),
                             name: card,
                             played: cardValues[section][card].played
                         });
@@ -681,7 +747,7 @@
                 return;
             }
 
-            let output = '=== PURPLE MTG DECK ===\n\n';
+            let output = '=== EDGE OF ETERNITIES DRAFT DECK ===\n\n';
             const sections = {};
             playedCards.forEach(card => {
                 if (!sections[card.section]) sections[card.section] = [];
@@ -695,6 +761,10 @@
                 });
                 output += '\n';
             });
+
+            const totalCards = playedCards.reduce((sum, card) => sum + card.played, 0);
+            output += `Total: ${totalCards} cards\n`;
+            output += `Generated by Edge of Eternities Draft Tracker\n`;
 
             document.getElementById('exportOutput').textContent = output;
             document.getElementById('exportResults').classList.remove('hidden');
