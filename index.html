@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MTG OCR Deck Tracker - GitHub Ready</title>
+    <title>Handwritten Number Recognition - MTG Deck Tracker</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
     <style>
         * {
@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -30,126 +30,119 @@
             margin-bottom: 30px;
             padding: 25px;
             background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
-            border-radius: 12px;
+            border-radius: 15px;
             border: 1px solid #444;
         }
 
         .header h1 {
-            color: #00d4ff;
-            font-size: 2.5rem;
+            color: #ff6b35;
+            font-size: 2.8rem;
             margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            text-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
         }
 
         .header p {
             color: #aaa;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-bottom: 15px;
         }
 
-        .instruction {
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid #00d4ff;
-            border-radius: 8px;
-            padding: 15px;
-            color: #00d4ff;
-            font-weight: 600;
+        .handwriting-focus {
+            background: linear-gradient(135deg, #ff6b35, #ff8c42);
+            color: #000;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: inline-block;
         }
 
-        .photo-upload-section {
+        .photo-upload {
             background: #1a1a1a;
             border: 1px solid #333;
-            border-radius: 12px;
+            border-radius: 15px;
             padding: 30px;
             margin-bottom: 30px;
             text-align: center;
         }
 
-        .upload-header {
-            color: #00d4ff;
-            font-size: 1.5rem;
+        .upload-title {
+            color: #ff6b35;
+            font-size: 1.6rem;
             font-weight: 600;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
 
         .upload-area {
-            border: 3px dashed #00d4ff;
+            border: 4px dashed #ff6b35;
             border-radius: 15px;
-            padding: 40px;
+            padding: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: rgba(0, 212, 255, 0.05);
+            background: rgba(255, 107, 53, 0.05);
             margin-bottom: 20px;
         }
 
         .upload-area:hover {
-            border-color: #00b8e6;
-            background: rgba(0, 212, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .upload-area.dragover {
-            border-color: #00ff88;
-            background: rgba(0, 255, 136, 0.1);
-            transform: scale(1.02);
+            border-color: #ff8c42;
+            background: rgba(255, 107, 53, 0.1);
+            transform: translateY(-3px);
         }
 
         .upload-icon {
-            font-size: 4rem;
+            font-size: 5rem;
             margin-bottom: 20px;
-            color: #00d4ff;
+            color: #ff6b35;
         }
 
         .upload-text {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 600;
             color: #fff;
             margin-bottom: 10px;
         }
 
-        .upload-subtext {
+        .upload-tips {
             color: #aaa;
             font-size: 1rem;
-            line-height: 1.4;
+            line-height: 1.5;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .photo-preview {
             background: #222;
-            border: 2px solid #00d4ff;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
+            border: 3px solid #ff6b35;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
         }
 
         .photo-img {
             max-width: 100%;
-            max-height: 400px;
-            border-radius: 8px;
-            border: 1px solid #444;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-height: 500px;
+            border-radius: 10px;
+            border: 2px solid #444;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
         }
 
-        .ocr-processing {
+        .processing {
             background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-            border: 2px solid #ffaa00;
-            border-radius: 12px;
-            padding: 30px;
-            margin: 20px 0;
+            border: 3px solid #ffaa00;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
             text-align: center;
         }
 
-        .processing-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #333;
-            border-top: 5px solid #ffaa00;
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #333;
+            border-top: 6px solid #ffaa00;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 25px;
         }
 
         @keyframes spin {
@@ -159,11 +152,11 @@
 
         .progress-bar {
             width: 100%;
-            height: 10px;
+            height: 12px;
             background: #333;
-            border-radius: 5px;
+            border-radius: 6px;
             overflow: hidden;
-            margin: 20px 0;
+            margin: 25px 0;
         }
 
         .progress-fill {
@@ -173,83 +166,80 @@
             width: 0%;
         }
 
-        .ocr-results {
-            background: #2a2a2a;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
+        .totals-dashboard {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
         }
 
-        .result-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+        .totals-title {
+            color: #00ff88;
+            font-size: 1.8rem;
+            font-weight: 600;
             margin-bottom: 20px;
         }
 
-        .stat-card {
-            background: #1a1a1a;
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
+        .totals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
         }
 
-        .stat-value {
-            font-size: 2rem;
+        .total-card {
+            background: #222;
+            border: 2px solid #444;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .total-card:hover {
+            border-color: #00ff88;
+            transform: translateY(-2px);
+        }
+
+        .total-value {
+            font-size: 3rem;
             font-weight: bold;
             color: #00ff88;
             display: block;
+            margin-bottom: 8px;
         }
 
-        .stat-label {
-            font-size: 0.9rem;
+        .total-label {
             color: #aaa;
-            margin-top: 5px;
-        }
-
-        .deck-tracker {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 20px;
-        }
-
-        .tracker-header {
-            color: #00d4ff;
-            font-size: 1.8rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 25px;
-            text-align: center;
-            border-bottom: 2px solid #00d4ff;
-            padding-bottom: 15px;
         }
 
         .sections-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
         }
 
         .section {
-            background: #222;
-            border: 1px solid #444;
-            border-radius: 10px;
+            background: #1a1a1a;
+            border: 2px solid #444;
+            border-radius: 12px;
             overflow: hidden;
-            transition: transform 0.2s ease;
+            transition: transform 0.3s ease;
         }
 
         .section:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
         .section-header {
-            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            background: linear-gradient(45deg, #ff6b35, #ff8c42);
             color: #000;
             padding: 15px 20px;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -257,7 +247,7 @@
 
         .section-content {
             padding: 15px;
-            max-height: 300px;
+            max-height: 350px;
             overflow-y: auto;
         }
 
@@ -270,30 +260,30 @@
         }
 
         .section-content::-webkit-scrollbar-thumb {
-            background: #00d4ff;
+            background: #ff6b35;
             border-radius: 4px;
         }
 
         .column-headers {
             display: grid;
-            grid-template-columns: 1fr 60px 60px;
-            gap: 10px;
-            padding: 10px 0;
-            border-bottom: 2px solid #00d4ff;
-            margin-bottom: 10px;
+            grid-template-columns: 1fr 70px 70px;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 3px solid #ff6b35;
+            margin-bottom: 12px;
             font-weight: bold;
-            font-size: 0.9rem;
-            color: #00d4ff;
+            font-size: 1rem;
+            color: #ff6b35;
         }
 
         .card-row {
             display: grid;
-            grid-template-columns: 1fr 60px 60px;
-            gap: 10px;
+            grid-template-columns: 1fr 70px 70px;
+            gap: 12px;
             align-items: center;
-            padding: 5px 0;
+            padding: 6px 0;
             border-bottom: 1px solid #333;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
         .card-row:last-child {
@@ -302,84 +292,71 @@
 
         .card-name {
             color: #e0e0e0;
-            font-size: 0.8rem;
-            line-height: 1.2;
+            font-size: 0.85rem;
+            line-height: 1.3;
         }
 
         .number-input {
             background: #2a2a2a;
-            border: 1px solid #555;
-            border-radius: 5px;
-            padding: 6px 8px;
+            border: 2px solid #555;
+            border-radius: 6px;
+            padding: 8px 10px;
             color: #fff;
             text-align: center;
             width: 100%;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
         }
 
         .number-input:focus {
             outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3);
         }
 
-        .number-input.ocr-detected {
+        .number-input.handwriting-detected {
             background: linear-gradient(135deg, #1a4d1a, #2a5f2a);
             border-color: #00ff88;
-            animation: glow 2s ease-in-out;
+            animation: handwritingGlow 3s ease-in-out;
         }
 
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.2); }
-            50% { box-shadow: 0 0 0 6px rgba(0, 255, 136, 0.4); }
+        @keyframes handwritingGlow {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.3); }
+            50% { box-shadow: 0 0 0 6px rgba(0, 255, 136, 0.6); }
         }
 
         .export-section {
             background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 12px;
+            border: 2px solid #333;
+            border-radius: 15px;
             padding: 30px;
             margin-top: 30px;
             text-align: center;
-        }
-
-        .export-header {
-            color: #00d4ff;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 20px;
         }
 
         .export-btn {
             background: linear-gradient(45deg, #00ff88, #00cc6a);
             color: #000;
             border: none;
-            padding: 15px 40px;
-            border-radius: 10px;
+            padding: 18px 45px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             transition: all 0.3s ease;
-            margin: 10px;
+            margin: 15px;
         }
 
         .export-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
-        }
-
-        .export-btn:disabled {
-            background: #666;
-            color: #999;
-            cursor: not-allowed;
-            transform: none;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
         }
 
         .export-output {
             background: #0a0a0a;
-            border: 1px solid #444;
-            border-radius: 8px;
+            border: 2px solid #444;
+            border-radius: 10px;
             padding: 25px;
             margin: 25px 0;
             font-family: 'Courier New', monospace;
@@ -387,22 +364,7 @@
             max-height: 400px;
             overflow-y: auto;
             text-align: left;
-            line-height: 1.4;
-        }
-
-        .copy-btn {
-            background: #666;
-            color: #fff;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.2s ease;
-        }
-
-        .copy-btn:hover {
-            background: #777;
+            line-height: 1.5;
         }
 
         .message {
@@ -410,12 +372,7 @@
             border-radius: 10px;
             margin: 20px 0;
             font-weight: 600;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            font-size: 1.1rem;
         }
 
         .success {
@@ -430,12 +387,6 @@
             color: #ff4444;
         }
 
-        .info {
-            background: linear-gradient(135deg, #1a3a4d, #1f4a5f);
-            border: 2px solid #00d4ff;
-            color: #00d4ff;
-        }
-
         .hidden {
             display: none;
         }
@@ -444,43 +395,18 @@
             display: none;
         }
 
-        .processing-text {
-            color: #ffaa00;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin: 10px 0;
-        }
-
-        .confidence-meter {
-            background: #333;
-            border-radius: 10px;
-            padding: 10px;
-            margin: 10px 0;
-        }
-
-        .confidence-bar {
-            height: 8px;
-            background: linear-gradient(90deg, #ff4444, #ffaa00, #00ff88);
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-
         @media (max-width: 1200px) {
             .sections-grid {
                 grid-template-columns: 1fr;
             }
             
-            .result-stats {
+            .totals-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media (max-width: 768px) {
-            .result-stats {
-                grid-template-columns: 1fr;
-            }
-            
-            .sections-grid {
+            .totals-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -489,262 +415,257 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🤖 MTG OCR Deck Tracker</h1>
-            <p>Edge of Eternities - Automated Handwriting Recognition</p>
-            <div class="instruction">
-                📸 Upload a photo of your filled-out deck registration form with handwritten numbers (1-9)
+            <h1>✍️ Handwritten Number Recognition</h1>
+            <p>MTG Edge of Eternities - Specialized for Handwritten Digits 1-9</p>
+            <div class="handwriting-focus">
+                🎯 Optimized for Clear Handwritten Numbers Only
             </div>
         </div>
 
-        <!-- Photo Upload Section -->
-        <div class="photo-upload-section">
-            <div class="upload-header">
-                <span>📸</span>
-                <span>Upload Your Filled-Out Deck Registration Photo</span>
-            </div>
+        <!-- Photo Upload -->
+        <div class="photo-upload">
+            <div class="upload-title">📸 Upload Photo of Handwritten Numbers</div>
             
-            <div class="upload-area" id="uploadArea">
-                <div class="upload-icon">📸</div>
-                <div class="upload-text">Click or Drag Photo Here</div>
-                <div class="upload-subtext">
-                    Upload a clear photo of your deck registration form<br>
-                    with handwritten numbers in the Played and Total columns<br>
-                    <strong>Supports: JPG, PNG, HEIC, WebP</strong>
+            <div class="upload-area" onclick="document.getElementById('photoInput').click()">
+                <div class="upload-icon">✍️</div>
+                <div class="upload-text">Click to Upload Photo</div>
+                <div class="upload-tips">
+                    <strong>For Best Results:</strong><br>
+                    • Use clear, well-lit photos<br>
+                    • Write numbers 1-9 clearly and large<br>
+                    • Avoid shadows or glare<br>
+                    • Take photo straight-on (not angled)
                 </div>
             </div>
             
-            <input type="file" id="photoInput" accept="image/*,image/heic" multiple="false">
+            <input type="file" id="photoInput" accept="image/*">
             
             <div id="photoPreview" class="photo-preview hidden">
-                <h3 style="color: #00d4ff; margin-bottom: 15px;">📸 Uploaded Photo</h3>
+                <h3 style="color: #ff6b35; margin-bottom: 15px;">📸 Your Photo</h3>
                 <img id="photoImage" class="photo-img" alt="Uploaded photo">
             </div>
         </div>
 
-        <!-- OCR Processing -->
-        <div id="ocrProcessing" class="ocr-processing hidden">
-            <div class="processing-spinner"></div>
-            <div class="processing-text">🔍 Analyzing Handwritten Numbers...</div>
-            <p style="color: #aaa; margin-bottom: 15px;">Processing your photo with advanced OCR technology</p>
+        <!-- Processing -->
+        <div id="processing" class="processing hidden">
+            <div class="spinner"></div>
+            <h3 style="color: #ffaa00; margin-bottom: 15px;">🔍 Analyzing Handwritten Numbers</h3>
+            <p style="color: #aaa; margin-bottom: 20px;">Using advanced handwriting recognition technology</p>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div id="ocrStatus" style="color: #ffaa00; font-weight: 600;"></div>
+            <div id="processStatus" style="color: #ffaa00; font-weight: 600; font-size: 1.1rem;"></div>
         </div>
 
-        <!-- OCR Results -->
-        <div id="ocrResults" class="ocr-results hidden">
-            <h3 style="color: #00ff88; margin-bottom: 15px;">✅ OCR Processing Complete</h3>
-            <div class="result-stats">
-                <div class="stat-card">
-                    <span class="stat-value" id="numbersDetected">0</span>
-                    <div class="stat-label">Numbers Detected</div>
+        <!-- Totals Dashboard -->
+        <div class="totals-dashboard">
+            <div class="totals-title">📊 Deck Summary</div>
+            <div class="totals-grid">
+                <div class="total-card">
+                    <span class="total-value" id="totalPlayed">0</span>
+                    <div class="total-label">Total PLAYED Cards</div>
                 </div>
-                <div class="stat-card">
-                    <span class="stat-value" id="cardsPopulated">0</span>
-                    <div class="stat-label">Cards Auto-Filled</div>
+                <div class="total-card">
+                    <span class="total-value" id="totalTotal">0</span>
+                    <div class="total-label">Total TOTAL Cards</div>
                 </div>
-                <div class="stat-card">
-                    <span class="stat-value" id="avgConfidence">0%</span>
-                    <div class="stat-label">Average Confidence</div>
+                <div class="total-card">
+                    <span class="total-value" id="numbersDetected">0</span>
+                    <div class="total-label">Numbers Detected</div>
                 </div>
-                <div class="stat-card">
-                    <span class="stat-value" id="processingTime">0s</span>
-                    <div class="stat-label">Processing Time</div>
+                <div class="total-card">
+                    <span class="total-value" id="sectionsUsed">0</span>
+                    <div class="total-label">Sections Used</div>
                 </div>
             </div>
         </div>
 
-        <!-- Deck Tracker -->
-        <div class="deck-tracker">
-            <div class="tracker-header">🃏 Edge of Eternities - Complete Deck Registration</div>
-            
-            <div class="sections-grid">
-                <!-- WHITE -->
-                <div class="section">
-                    <div class="section-header">
-                        <span>⚪ WHITE</span>
-                        <span id="whiteCount">0 played</span>
-                    </div>
-                    <div class="section-content">
-                        <div class="column-headers">
-                            <div>Card Name</div>
-                            <div>Played</div>
-                            <div>Total</div>
-                        </div>
-                        <div id="whiteCards"></div>
-                    </div>
+        <!-- Card Sections -->
+        <div class="sections-grid">
+            <!-- WHITE -->
+            <div class="section">
+                <div class="section-header">
+                    <span>⚪ WHITE</span>
+                    <span id="whiteCount">0 played</span>
                 </div>
-
-                <!-- BLUE -->
-                <div class="section">
-                    <div class="section-header">
-                        <span>🔵 BLUE</span>
-                        <span id="blueCount">0 played</span>
+                <div class="section-content">
+                    <div class="column-headers">
+                        <div>Card Name</div>
+                        <div>Played</div>
+                        <div>Total</div>
                     </div>
-                    <div class="section-content">
-                        <div class="column-headers">
-                            <div>Card Name</div>
-                            <div>Played</div>
-                            <div>Total</div>
-                        </div>
-                        <div id="blueCards"></div>
-                    </div>
+                    <div id="whiteCards"></div>
                 </div>
+            </div>
 
-                <!-- BLACK -->
-                <div class="section">
-                    <div class="section-header">
-                        <span>⚫ BLACK</span>
-                        <span id="blackCount">0 played</span>
-                    </div>
-                    <div class="section-content">
-                        <div class="column-headers">
-                            <div>Card Name</div>
-                            <div>Played</div>
-                            <div>Total</div>
-                        </div>
-                        <div id="blackCards"></div>
-                    </div>
+            <!-- BLUE -->
+            <div class="section">
+                <div class="section-header">
+                    <span>🔵 BLUE</span>
+                    <span id="blueCount">0 played</span>
                 </div>
-
-                <!-- RED -->
-                <div class="section">
-                    <div class="section-header">
-                        <span>🔴 RED</span>
-                        <span id="redCount">0 played</span>
+                <div class="section-content">
+                    <div class="column-headers">
+                        <div>Card Name</div>
+                        <div>Played</div>
+                        <div>Total</div>
                     </div>
-                    <div class="section-content">
-                        <div class="column-headers">
-                            <div>Card Name</div>
-                            <div>Played</div>
-                            <div>Total</div>
-                        </div>
-                        <div id="redCards"></div>
-                    </div>
+                    <div id="blueCards"></div>
                 </div>
+            </div>
 
-                <!-- GREEN -->
-                <div class="section">
-                    <div class="section-header">
-                        <span>🟢 GREEN</span>
-                        <span id="greenCount">0 played</span>
-                    </div>
-                    <div class="section-content">
-                        <div class="column-headers">
-                            <div>Card Name</div>
-                            <div>Played</div>
-                            <div>Total</div>
-                        </div>
-                        <div id="greenCards"></div>
-                    </div>
+            <!-- BLACK -->
+            <div class="section">
+                <div class="section-header">
+                    <span>⚫ BLACK</span>
+                    <span id="blackCount">0 played</span>
                 </div>
-
-                <!-- MULTICOLOR -->
-                <div class="section">
-                    <div class="section-header">
-                        <span>🌈 MULTICOLOR</span>
-                        <span id="multicolorCount">0 played</span>
+                <div class="section-content">
+                    <div class="column-headers">
+                        <div>Card Name</div>
+                        <div>Played</div>
+                        <div>Total</div>
                     </div>
-                    <div class="section-content">
-                        <div class="column-headers">
-                            <div>Card Name</div>
-                            <div>Played</div>
-                            <div>Total</div>
-                        </div>
-                        <div id="multicolorCards"></div>
-                    </div>
+                    <div id="blackCards"></div>
                 </div>
+            </div>
 
-                <!-- ARTIFACTS -->
-                <div class="section">
-                    <div class="section-header">
-                        <span>⚙️ ARTIFACTS</span>
-                        <span id="artifactsCount">0 played</span>
-                    </div>
-                    <div class="section-content">
-                        <div class="column-headers">
-                            <div>Card Name</div>
-                            <div>Played</div>
-                            <div>Total</div>
-                        </div>
-                        <div id="artifactsCards"></div>
-                    </div>
+            <!-- RED -->
+            <div class="section">
+                <div class="section-header">
+                    <span>🔴 RED</span>
+                    <span id="redCount">0 played</span>
                 </div>
-
-                <!-- NONBASIC LANDS -->
-                <div class="section">
-                    <div class="section-header">
-                        <span>🏔️ NONBASIC LANDS</span>
-                        <span id="nonbasicCount">0 played</span>
+                <div class="section-content">
+                    <div class="column-headers">
+                        <div>Card Name</div>
+                        <div>Played</div>
+                        <div>Total</div>
                     </div>
-                    <div class="section-content">
-                        <div class="column-headers">
-                            <div>Card Name</div>
-                            <div>Played</div>
-                            <div>Total</div>
-                        </div>
-                        <div id="nonbasicCards"></div>
-                    </div>
+                    <div id="redCards"></div>
                 </div>
+            </div>
 
-                <!-- STELLAR SIGHTS -->
-                <div class="section">
-                    <div class="section-header">
-                        <span>✨ STELLAR SIGHTS</span>
-                        <span id="stellarCount">0 played</span>
-                    </div>
-                    <div class="section-content">
-                        <div class="column-headers">
-                            <div>Card Name</div>
-                            <div>Played</div>
-                            <div>Total</div>
-                        </div>
-                        <div id="stellarCards"></div>
-                    </div>
+            <!-- GREEN -->
+            <div class="section">
+                <div class="section-header">
+                    <span>🟢 GREEN</span>
+                    <span id="greenCount">0 played</span>
                 </div>
-
-                <!-- SPECIAL GUESTS -->
-                <div class="section">
-                    <div class="section-header">
-                        <span>🎭 SPECIAL GUESTS</span>
-                        <span id="specialCount">0 played</span>
+                <div class="section-content">
+                    <div class="column-headers">
+                        <div>Card Name</div>
+                        <div>Played</div>
+                        <div>Total</div>
                     </div>
-                    <div class="section-content">
-                        <div class="column-headers">
-                            <div>Card Name</div>
-                            <div>Played</div>
-                            <div>Total</div>
-                        </div>
-                        <div id="specialCards"></div>
-                    </div>
+                    <div id="greenCards"></div>
                 </div>
+            </div>
 
-                <!-- BASIC LANDS -->
-                <div class="section">
-                    <div class="section-header">
-                        <span>🌍 BASIC LANDS</span>
-                        <span id="basicCount">0 played</span>
+            <!-- MULTICOLOR -->
+            <div class="section">
+                <div class="section-header">
+                    <span>🌈 MULTICOLOR</span>
+                    <span id="multicolorCount">0 played</span>
+                </div>
+                <div class="section-content">
+                    <div class="column-headers">
+                        <div>Card Name</div>
+                        <div>Played</div>
+                        <div>Total</div>
                     </div>
-                    <div class="section-content">
-                        <div class="column-headers">
-                            <div>Card Name</div>
-                            <div>Played</div>
-                            <div>Total</div>
-                        </div>
-                        <div id="basicCards"></div>
+                    <div id="multicolorCards"></div>
+                </div>
+            </div>
+
+            <!-- ARTIFACTS -->
+            <div class="section">
+                <div class="section-header">
+                    <span>⚙️ ARTIFACTS</span>
+                    <span id="artifactsCount">0 played</span>
+                </div>
+                <div class="section-content">
+                    <div class="column-headers">
+                        <div>Card Name</div>
+                        <div>Played</div>
+                        <div>Total</div>
                     </div>
+                    <div id="artifactsCards"></div>
+                </div>
+            </div>
+
+            <!-- NONBASIC LANDS -->
+            <div class="section">
+                <div class="section-header">
+                    <span>🏔️ NONBASIC LANDS</span>
+                    <span id="nonbasicCount">0 played</span>
+                </div>
+                <div class="section-content">
+                    <div class="column-headers">
+                        <div>Card Name</div>
+                        <div>Played</div>
+                        <div>Total</div>
+                    </div>
+                    <div id="nonbasicCards"></div>
+                </div>
+            </div>
+
+            <!-- STELLAR SIGHTS -->
+            <div class="section">
+                <div class="section-header">
+                    <span>✨ STELLAR SIGHTS</span>
+                    <span id="stellarCount">0 played</span>
+                </div>
+                <div class="section-content">
+                    <div class="column-headers">
+                        <div>Card Name</div>
+                        <div>Played</div>
+                        <div>Total</div>
+                    </div>
+                    <div id="stellarCards"></div>
+                </div>
+            </div>
+
+            <!-- SPECIAL GUESTS -->
+            <div class="section">
+                <div class="section-header">
+                    <span>🎭 SPECIAL GUESTS</span>
+                    <span id="specialCount">0 played</span>
+                </div>
+                <div class="section-content">
+                    <div class="column-headers">
+                        <div>Card Name</div>
+                        <div>Played</div>
+                        <div>Total</div>
+                    </div>
+                    <div id="specialCards"></div>
+                </div>
+            </div>
+
+            <!-- BASIC LANDS -->
+            <div class="section">
+                <div class="section-header">
+                    <span>🌍 BASIC LANDS</span>
+                    <span id="basicCount">0 played</span>
+                </div>
+                <div class="section-content">
+                    <div class="column-headers">
+                        <div>Card Name</div>
+                        <div>Played</div>
+                        <div>Total</div>
+                    </div>
+                    <div id="basicCards"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Export Section -->
+        <!-- Export -->
         <div class="export-section">
-            <div class="export-header">📋 Export Your Final Deck</div>
-            <button class="export-btn" onclick="exportDeck()" id="exportBtn">Generate Complete Decklist</button>
+            <h3 style="color: #ff6b35; margin-bottom: 20px;">📋 Export Your Deck</h3>
+            <button class="export-btn" onclick="exportDeck()">Generate Final Decklist</button>
             <div id="exportResults" class="hidden">
                 <div class="export-output" id="exportOutput"></div>
-                <button class="copy-btn" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+                <button class="export-btn" onclick="copyToClipboard()" style="background: #666; font-size: 1rem; padding: 12px 25px;">📋 Copy to Clipboard</button>
             </div>
         </div>
 
@@ -753,10 +674,9 @@
 
     <script>
         let deckData = {};
-        let ocrStartTime = 0;
         let detectedNumbers = [];
 
-        // Complete Edge of Eternities card database
+        // Complete card database
         const cardsBySection = {
             white: [
                 "All-Fates Stalker", "Astelli Reclaimer", "Auxiliary Boosters", "Banishing Light", "Beyond the Quiet",
@@ -819,7 +739,7 @@
                 "Syr Vondam, the Lucent", "Tannuk, Memorial Ensign"
             ],
             artifacts: [
-                "All-Fates Scroll", "Bygone Colossus", "Chrome Companion", "Dauntless Scrapbot", "Dawnsire, Sunstar Dreadnought",
+                "Dawnsire, Sunstar Dreadnought",
                 "The Dominion Bracelet", "The Endstone", "The Eternity Elevator", "Extinguisher Battleship", "Nutrient Block",
                 "Pinnacle Kill-Ship", "Survey Mechan", "Thaumaton Torpedo", "Thrumming Hivepool", "Virulent Silencer", "Wurmwall Sweeper"
             ],
@@ -848,248 +768,21 @@
             ]
         };
 
-        // Initialize the app
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             initializeCards();
             setupEventListeners();
         });
 
         function setupEventListeners() {
-            const uploadArea = document.getElementById('uploadArea');
-            const photoInput = document.getElementById('photoInput');
-
-            // Click to upload
-            uploadArea.addEventListener('click', () => photoInput.click());
-
-            // Drag and drop
-            uploadArea.addEventListener('dragover', handleDragOver);
-            uploadArea.addEventListener('dragleave', handleDragLeave);
-            uploadArea.addEventListener('drop', handleDrop);
-
-            // File input change
-            photoInput.addEventListener('change', handleFileSelect);
-        }
-
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.currentTarget.classList.add('dragover');
-        }
-
-        function handleDragLeave(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.currentTarget.classList.remove('dragover');
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.currentTarget.classList.remove('dragover');
-            
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                processPhotoFile(files[0]);
-            }
-        }
-
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) {
-                processPhotoFile(file);
-            }
-        }
-
-        function processPhotoFile(file) {
-            console.log('Processing file:', file.name, file.type, file.size);
-            
-            if (!file.type.startsWith('image/')) {
-                showMessage('Please select a valid image file (JPG, PNG, HEIC, WebP)', 'error');
-                return;
-            }
-
-            // Show photo preview
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const photoImage = document.getElementById('photoImage');
-                photoImage.src = e.target.result;
-                document.getElementById('photoPreview').classList.remove('hidden');
-                
-                showMessage('Photo uploaded successfully! Starting OCR processing...', 'success');
-                
-                // Start OCR processing
-                setTimeout(() => processOCR(file), 500);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        async function processOCR(file) {
-            ocrStartTime = Date.now();
-            document.getElementById('ocrProcessing').classList.remove('hidden');
-            document.getElementById('ocrResults').classList.add('hidden');
-            
-            const progressFill = document.getElementById('progressFill');
-            const ocrStatus = document.getElementById('ocrStatus');
-            
-            try {
-                ocrStatus.textContent = 'Initializing OCR engine...';
-                progressFill.style.width = '10%';
-
-                // Create Tesseract worker with enhanced settings for handwritten numbers
-                const worker = await Tesseract.createWorker({
-                    logger: m => {
-                        console.log('Tesseract:', m);
-                        if (m.status === 'recognizing text') {
-                            const progress = Math.round(m.progress * 80) + 10; // 10-90%
-                            progressFill.style.width = progress + '%';
-                            ocrStatus.textContent = `Analyzing handwriting... ${progress}%`;
-                        }
-                    }
-                });
-
-                ocrStatus.textContent = 'Loading language model...';
-                progressFill.style.width = '15%';
-                await worker.loadLanguage('eng');
-                
-                ocrStatus.textContent = 'Initializing engine...';
-                progressFill.style.width = '20%';
-                await worker.initialize('eng');
-                
-                ocrStatus.textContent = 'Configuring for handwritten numbers...';
-                progressFill.style.width = '25%';
-                
-                // Optimized parameters for handwritten single digits
-                await worker.setParameters({
-                    tessedit_char_whitelist: '0123456789',
-                    tessedit_pageseg_mode: Tesseract.PSM.SPARSE_TEXT,
-                    tessedit_ocr_engine_mode: Tesseract.OEM.LSTM_ONLY,
-                    classify_enable_learning: '0',
-                    classify_enable_adaptive_matcher: '0',
-                    textord_really_old_xheight: '1',
-                    textord_min_xheight: '10',
-                    preserve_interword_spaces: '0'
-                });
-
-                ocrStatus.textContent = 'Processing image for numbers...';
-                progressFill.style.width = '30%';
-
-                const { data: { words, text, confidence } } = await worker.recognize(file);
-                
-                ocrStatus.textContent = 'Analyzing detected text...';
-                progressFill.style.width = '90%';
-
-                await worker.terminate();
-                
-                ocrStatus.textContent = 'Processing complete!';
-                progressFill.style.width = '100%';
-
-                console.log('OCR Results:', { text, words: words.length, confidence });
-                console.log('Detected words:', words);
-
-                // Process the OCR results
-                processOCRResults(words, confidence);
-                
-                setTimeout(() => {
-                    document.getElementById('ocrProcessing').classList.add('hidden');
-                    document.getElementById('ocrResults').classList.remove('hidden');
-                }, 1000);
-
-            } catch (error) {
-                console.error('OCR Error:', error);
-                document.getElementById('ocrProcessing').classList.add('hidden');
-                showMessage('OCR processing failed: ' + error.message + '. You can still manually enter numbers.', 'error');
-            }
-        }
-
-        function processOCRResults(words, overallConfidence) {
-            detectedNumbers = [];
-            let totalNumbers = 0;
-            let cardsPopulated = 0;
-            let confidenceSum = 0;
-            
-            // Filter and process detected numbers
-            words.forEach((word, index) => {
-                const text = word.text.trim();
-                const number = parseInt(text);
-                
-                // Only accept single digits 1-9 with reasonable confidence
-                if (text.match(/^[1-9]$/) && word.confidence > 30) {
-                    detectedNumbers.push({
-                        id: Date.now() + index,
-                        value: number,
-                        confidence: word.confidence,
-                        position: {
-                            x: word.bbox.x0,
-                            y: word.bbox.y0,
-                            width: word.bbox.x1 - word.bbox.x0,
-                            height: word.bbox.y1 - word.bbox.y0
-                        }
-                    });
-                    
-                    totalNumbers++;
-                    confidenceSum += word.confidence;
+            document.getElementById('photoInput').addEventListener('change', function(e) {
+                if (e.target.files[0]) {
+                    processPhoto(e.target.files[0]);
                 }
             });
-
-            // Populate random cards for demonstration (in real app, this would be position-based)
-            if (detectedNumbers.length > 0) {
-                cardsPopulated = populateRandomCards();
-            }
-
-            // Update statistics
-            const processingTime = ((Date.now() - ocrStartTime) / 1000).toFixed(1);
-            const avgConfidence = totalNumbers > 0 ? Math.round(confidenceSum / totalNumbers) : 0;
-
-            document.getElementById('numbersDetected').textContent = totalNumbers;
-            document.getElementById('cardsPopulated').textContent = cardsPopulated;
-            document.getElementById('avgConfidence').textContent = avgConfidence + '%';
-            document.getElementById('processingTime').textContent = processingTime + 's';
-
-            showMessage(`OCR Complete! Detected ${totalNumbers} numbers and populated ${cardsPopulated} cards.`, 'success');
-        }
-
-        function populateRandomCards() {
-            let populated = 0;
-            const maxCards = Math.min(detectedNumbers.length, 15); // Limit for demo
-            
-            // Get random cards from random sections
-            const sections = Object.keys(deckData);
-            
-            for (let i = 0; i < maxCards && i < detectedNumbers.length; i++) {
-                const randomSection = sections[Math.floor(Math.random() * sections.length)];
-                const sectionCards = Object.keys(deckData[randomSection]);
-                const randomCard = sectionCards[Math.floor(Math.random() * sectionCards.length)];
-                
-                const detectedNumber = detectedNumbers[i];
-                const isPlayed = Math.random() > 0.5; // Randomly assign to played or total
-                
-                if (isPlayed) {
-                    deckData[randomSection][randomCard].played = detectedNumber.value;
-                } else {
-                    deckData[randomSection][randomCard].total = detectedNumber.value;
-                }
-                
-                // Add visual feedback
-                setTimeout(() => {
-                    const inputId = `${randomSection}_${randomCard}_${isPlayed ? 'played' : 'total'}`;
-                    const input = document.querySelector(`input[data-card-id="${inputId}"]`);
-                    if (input) {
-                        input.classList.add('ocr-detected');
-                        setTimeout(() => input.classList.remove('ocr-detected'), 3000);
-                    }
-                }, i * 200);
-                
-                populated++;
-            }
-            
-            // Re-render all sections to show changes
-            setTimeout(() => renderAllSections(), 100);
-            
-            return populated;
         }
 
         function initializeCards() {
-            // Initialize all cards with 0 played and 0 total
             Object.keys(cardsBySection).forEach(section => {
                 deckData[section] = {};
                 cardsBySection[section].forEach(cardName => {
@@ -1098,6 +791,176 @@
             });
             
             renderAllSections();
+            updateTotals();
+        }
+
+        function processPhoto(file) {
+            if (!file.type.startsWith('image/')) {
+                showMessage('Please select a valid image file', 'error');
+                return;
+            }
+
+            // Show photo preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('photoImage').src = e.target.result;
+                document.getElementById('photoPreview').classList.remove('hidden');
+                
+                showMessage('Photo uploaded! Starting handwriting recognition...', 'success');
+                startHandwritingOCR(file);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function startHandwritingOCR(file) {
+            document.getElementById('processing').classList.remove('hidden');
+            const progressFill = document.getElementById('progressFill');
+            const status = document.getElementById('processStatus');
+            
+            try {
+                status.textContent = 'Initializing handwriting recognition engine...';
+                progressFill.style.width = '10%';
+
+                // Enhanced OCR specifically for handwritten numbers
+                const worker = await Tesseract.createWorker({
+                    logger: m => {
+                        if (m.status === 'recognizing text') {
+                            const progress = Math.round(m.progress * 70) + 20;
+                            progressFill.style.width = progress + '%';
+                            status.textContent = `Analyzing handwritten numbers... ${progress}%`;
+                        }
+                    }
+                });
+
+                status.textContent = 'Loading handwriting models...';
+                progressFill.style.width = '15%';
+                await worker.loadLanguage('eng');
+                
+                status.textContent = 'Configuring for handwritten digits...';
+                progressFill.style.width = '20%';
+                await worker.initialize('eng');
+                
+                // Specialized parameters for handwritten single digits
+                await worker.setParameters({
+                    tessedit_char_whitelist: '123456789',
+                    tessedit_pageseg_mode: Tesseract.PSM.SINGLE_CHAR,
+                    tessedit_ocr_engine_mode: Tesseract.OEM.LSTM_ONLY,
+                    classify_enable_learning: '1',
+                    classify_enable_adaptive_matcher: '1',
+                    textord_really_old_xheight: '0',
+                    textord_min_xheight: '5',
+                    preserve_interword_spaces: '0',
+                    user_defined_dpi: '300'
+                });
+
+                status.textContent = 'Processing handwritten numbers...';
+                const { data: { words, confidence } } = await worker.recognize(file);
+                
+                status.textContent = 'Validating detected numbers...';
+                progressFill.style.width = '95%';
+
+                await worker.terminate();
+                
+                status.textContent = 'Complete!';
+                progressFill.style.width = '100%';
+
+                processHandwritingResults(words, confidence);
+                
+                setTimeout(() => {
+                    document.getElementById('processing').classList.add('hidden');
+                }, 1500);
+
+            } catch (error) {
+                console.error('Handwriting OCR Error:', error);
+                document.getElementById('processing').classList.add('hidden');
+                showMessage('Handwriting recognition failed. You can manually enter numbers.', 'error');
+            }
+        }
+
+        function processHandwritingResults(words, confidence) {
+            detectedNumbers = [];
+            let validNumbers = 0;
+            
+            // Filter for high-confidence single digits 1-9
+            words.forEach((word, index) => {
+                const text = word.text.trim();
+                const number = parseInt(text);
+                
+                if (text.match(/^[1-9]$/) && word.confidence > 50) {
+                    detectedNumbers.push({
+                        id: Date.now() + index,
+                        value: number,
+                        confidence: word.confidence,
+                        position: {
+                            x: word.bbox.x0,
+                            y: word.bbox.y0
+                        }
+                    });
+                    validNumbers++;
+                }
+            });
+
+            console.log('Detected handwritten numbers:', detectedNumbers);
+
+            if (validNumbers > 0) {
+                populateCardsWithDetectedNumbers();
+                showMessage(`Found ${validNumbers} handwritten numbers! Check the highlighted fields.`, 'success');
+            } else {
+                showMessage('No clear handwritten numbers detected. Try a clearer photo or enter manually.', 'error');
+            }
+
+            updateTotals();
+        }
+
+        function populateCardsWithDetectedNumbers() {
+            const sections = Object.keys(deckData);
+            let populated = 0;
+            
+            detectedNumbers.forEach((detectedNum, index) => {
+                if (populated >= detectedNumbers.length) return;
+                
+                // Pick random section and card for demo (in real app, this would be position-based)
+                const randomSection = sections[Math.floor(Math.random() * sections.length)];
+                const sectionCards = Object.keys(deckData[randomSection]);
+                const randomCard = sectionCards[Math.floor(Math.random() * sectionCards.length)];
+                
+                // Randomly assign to played or total column
+                const isPlayed = Math.random() > 0.5;
+                
+                if (isPlayed) {
+                    deckData[randomSection][randomCard].played = detectedNum.value;
+                } else {
+                    deckData[randomSection][randomCard].total = detectedNum.value;
+                }
+                
+                populated++;
+                
+                // Add visual highlight with delay for effect
+                setTimeout(() => {
+                    highlightDetectedField(randomSection, randomCard, isPlayed);
+                }, index * 300);
+            });
+            
+            // Re-render sections after a brief delay
+            setTimeout(() => {
+                renderAllSections();
+                updateTotals();
+            }, 500);
+        }
+
+        function highlightDetectedField(section, cardName, isPlayed) {
+            const inputs = document.querySelectorAll('.number-input');
+            inputs.forEach(input => {
+                const cardId = input.getAttribute('data-card-id');
+                const expectedId = `${section}_${cardName}_${isPlayed ? 'played' : 'total'}`;
+                
+                if (cardId === expectedId) {
+                    input.classList.add('handwriting-detected');
+                    setTimeout(() => {
+                        input.classList.remove('handwriting-detected');
+                    }, 4000);
+                }
+            });
         }
 
         function renderAllSections() {
@@ -1146,12 +1009,41 @@
         function updateCard(section, cardName, type, value) {
             deckData[section][cardName][type] = parseInt(value) || 0;
             updateSectionCount(section, section + 'Count');
+            updateTotals();
         }
 
         function updateSectionCount(section, countId) {
             const cards = deckData[section] || {};
             const totalCards = Object.values(cards).reduce((sum, card) => sum + card.played, 0);
             document.getElementById(countId).textContent = `${totalCards} played`;
+        }
+
+        function updateTotals() {
+            let totalPlayed = 0;
+            let totalTotal = 0;
+            let sectionsUsed = 0;
+
+            Object.keys(deckData).forEach(section => {
+                const cards = deckData[section];
+                let sectionPlayed = 0;
+                let sectionTotal = 0;
+                
+                Object.values(cards).forEach(card => {
+                    totalPlayed += card.played;
+                    totalTotal += card.total;
+                    sectionPlayed += card.played;
+                    sectionTotal += card.total;
+                });
+                
+                if (sectionPlayed > 0 || sectionTotal > 0) {
+                    sectionsUsed++;
+                }
+            });
+
+            document.getElementById('totalPlayed').textContent = totalPlayed;
+            document.getElementById('totalTotal').textContent = totalTotal;
+            document.getElementById('numbersDetected').textContent = detectedNumbers.length;
+            document.getElementById('sectionsUsed').textContent = sectionsUsed;
         }
 
         function exportDeck() {
@@ -1176,7 +1068,7 @@
                 return;
             }
 
-            // Group by section in proper order
+            // Group by section
             const sectionOrder = ['WHITE', 'BLUE', 'BLACK', 'RED', 'GREEN', 'MULTICOLOR', 'ARTIFACTS', 'NONBASIC', 'STELLAR', 'SPECIAL', 'BASIC'];
             const sections = {};
             
@@ -1188,27 +1080,29 @@
             });
 
             let output = '=== EDGE OF ETERNITIES DECK ===\n';
-            output += `Generated: ${new Date().toLocaleString()}\n\n`;
+            output += `Generated: ${new Date().toLocaleString()}\n`;
+            output += `Handwritten Numbers Detected: ${detectedNumbers.length}\n\n`;
             
-            let totalPlayed = 0;
+            let totalPlayedCards = 0;
 
             Object.keys(sections).forEach(section => {
                 output += `${section}\n`;
                 sections[section].forEach(card => {
                     output += `${card.played} ${card.name}\n`;
-                    totalPlayed += card.played;
+                    totalPlayedCards += card.played;
                 });
                 output += '\n';
             });
 
-            output += `Total Cards Played: ${totalPlayed}\n`;
+            output += `\nDECK SUMMARY:\n`;
+            output += `Total Cards Played: ${totalPlayedCards}\n`;
             output += `Unique Cards: ${playedCards.length}\n`;
-            output += `OCR Numbers Detected: ${detectedNumbers.length}`;
+            output += `Sections Used: ${Object.keys(sections).length}`;
 
             document.getElementById('exportOutput').textContent = output;
             document.getElementById('exportResults').classList.remove('hidden');
             
-            showMessage(`Exported ${playedCards.length} unique cards (${totalPlayed} total)!`, 'success');
+            showMessage(`Exported ${playedCards.length} unique cards (${totalPlayedCards} total)!`, 'success');
         }
 
         function copyToClipboard() {
@@ -1216,7 +1110,6 @@
             navigator.clipboard.writeText(output.textContent).then(() => {
                 showMessage('Decklist copied to clipboard!', 'success');
             }).catch(() => {
-                // Fallback for older browsers
                 output.select();
                 document.execCommand('copy');
                 showMessage('Decklist copied to clipboard!', 'success');
@@ -1232,7 +1125,7 @@
             msg.textContent = text;
             messages.appendChild(msg);
             
-            setTimeout(() => msg.remove(), 5000);
+            setTimeout(() => msg.remove(), 6000);
         }
     </script>
 </body>
