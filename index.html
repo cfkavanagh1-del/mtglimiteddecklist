@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Handwritten Number Recognition - MTG Deck Tracker</title>
+    <title>Purple Handwritten Number Recognition - MTG Deck Tracker</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
     <style>
         * {
@@ -35,10 +35,10 @@
         }
 
         .header h1 {
-            color: #ff6b35;
+            color: #a855f7;
             font-size: 2.8rem;
             margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
         }
 
         .header p {
@@ -48,8 +48,8 @@
         }
 
         .handwriting-focus {
-            background: linear-gradient(135deg, #ff6b35, #ff8c42);
-            color: #000;
+            background: linear-gradient(135deg, #a855f7, #8b5cf6);
+            color: #fff;
             padding: 15px 25px;
             border-radius: 10px;
             font-weight: bold;
@@ -67,32 +67,32 @@
         }
 
         .upload-title {
-            color: #ff6b35;
+            color: #a855f7;
             font-size: 1.6rem;
             font-weight: 600;
             margin-bottom: 20px;
         }
 
         .upload-area {
-            border: 4px dashed #ff6b35;
+            border: 4px dashed #a855f7;
             border-radius: 15px;
             padding: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: rgba(255, 107, 53, 0.05);
+            background: rgba(168, 85, 247, 0.05);
             margin-bottom: 20px;
         }
 
         .upload-area:hover {
-            border-color: #ff8c42;
-            background: rgba(255, 107, 53, 0.1);
+            border-color: #8b5cf6;
+            background: rgba(168, 85, 247, 0.1);
             transform: translateY(-3px);
         }
 
         .upload-icon {
             font-size: 5rem;
             margin-bottom: 20px;
-            color: #ff6b35;
+            color: #a855f7;
         }
 
         .upload-text {
@@ -112,7 +112,7 @@
 
         .photo-preview {
             background: #222;
-            border: 3px solid #ff6b35;
+            border: 3px solid #a855f7;
             border-radius: 15px;
             padding: 25px;
             margin: 25px 0;
@@ -128,7 +128,7 @@
 
         .processing {
             background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-            border: 3px solid #ffaa00;
+            border: 3px solid #d946ef;
             border-radius: 15px;
             padding: 40px;
             margin: 30px 0;
@@ -139,7 +139,7 @@
             width: 60px;
             height: 60px;
             border: 6px solid #333;
-            border-top: 6px solid #ffaa00;
+            border-top: 6px solid #d946ef;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 25px;
@@ -161,14 +161,14 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ffaa00, #ff8800);
+            background: linear-gradient(90deg, #d946ef, #c026d3);
             transition: width 0.3s ease;
             width: 0%;
         }
 
         .totals-dashboard {
             background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-            border: 2px solid #00ff88;
+            border: 2px solid #9333ea;
             border-radius: 15px;
             padding: 25px;
             margin: 30px 0;
@@ -176,7 +176,7 @@
         }
 
         .totals-title {
-            color: #00ff88;
+            color: #9333ea;
             font-size: 1.8rem;
             font-weight: 600;
             margin-bottom: 20px;
@@ -197,14 +197,14 @@
         }
 
         .total-card:hover {
-            border-color: #00ff88;
+            border-color: #9333ea;
             transform: translateY(-2px);
         }
 
         .total-value {
             font-size: 3rem;
             font-weight: bold;
-            color: #00ff88;
+            color: #9333ea;
             display: block;
             margin-bottom: 8px;
         }
@@ -213,6 +213,32 @@
             color: #aaa;
             font-size: 1rem;
             font-weight: 600;
+        }
+
+        .debug-section {
+            background: #1a1a1a;
+            border: 2px solid #f59e0b;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .debug-title {
+            color: #f59e0b;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .debug-info {
+            background: #0a0a0a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 200px;
+            overflow-y: auto;
         }
 
         .sections-grid {
@@ -235,8 +261,8 @@
         }
 
         .section-header {
-            background: linear-gradient(45deg, #ff6b35, #ff8c42);
-            color: #000;
+            background: linear-gradient(45deg, #a855f7, #8b5cf6);
+            color: #fff;
             padding: 15px 20px;
             font-weight: bold;
             font-size: 1.2rem;
@@ -260,7 +286,7 @@
         }
 
         .section-content::-webkit-scrollbar-thumb {
-            background: #ff6b35;
+            background: #a855f7;
             border-radius: 4px;
         }
 
@@ -269,11 +295,11 @@
             grid-template-columns: 1fr 70px 70px;
             gap: 12px;
             padding: 12px 0;
-            border-bottom: 3px solid #ff6b35;
+            border-bottom: 3px solid #a855f7;
             margin-bottom: 12px;
             font-weight: bold;
             font-size: 1rem;
-            color: #ff6b35;
+            color: #a855f7;
         }
 
         .card-row {
@@ -311,19 +337,19 @@
 
         .number-input:focus {
             outline: none;
-            border-color: #ff6b35;
-            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3);
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.3);
         }
 
         .number-input.handwriting-detected {
-            background: linear-gradient(135deg, #1a4d1a, #2a5f2a);
-            border-color: #00ff88;
+            background: linear-gradient(135deg, #4c1d95, #5b21b6);
+            border-color: #9333ea;
             animation: handwritingGlow 3s ease-in-out;
         }
 
         @keyframes handwritingGlow {
-            0%, 100% { box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.3); }
-            50% { box-shadow: 0 0 0 6px rgba(0, 255, 136, 0.6); }
+            0%, 100% { box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.3); }
+            50% { box-shadow: 0 0 0 6px rgba(147, 51, 234, 0.6); }
         }
 
         .export-section {
@@ -336,8 +362,8 @@
         }
 
         .export-btn {
-            background: linear-gradient(45deg, #00ff88, #00cc6a);
-            color: #000;
+            background: linear-gradient(45deg, #9333ea, #7c3aed);
+            color: #fff;
             border: none;
             padding: 18px 45px;
             border-radius: 12px;
@@ -350,7 +376,7 @@
 
         .export-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.4);
         }
 
         .export-output {
@@ -376,15 +402,15 @@
         }
 
         .success {
-            background: linear-gradient(135deg, #0a4d3a, #0d5f47);
-            border: 2px solid #00ff88;
-            color: #00ff88;
+            background: linear-gradient(135deg, #1f2937, #374151);
+            border: 2px solid #9333ea;
+            color: #9333ea;
         }
 
         .error {
             background: linear-gradient(135deg, #4d0a0a, #5f0d0d);
-            border: 2px solid #ff4444;
-            color: #ff4444;
+            border: 2px solid #ef4444;
+            color: #ef4444;
         }
 
         .hidden {
@@ -415,10 +441,10 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>✍️ Handwritten Number Recognition</h1>
-            <p>MTG Edge of Eternities - Specialized for Handwritten Digits 1-9</p>
+            <h1>💜 Purple Handwritten Number Recognition</h1>
+            <p>MTG Edge of Eternities - Enhanced OCR Detection</p>
             <div class="handwriting-focus">
-                🎯 Optimized for Clear Handwritten Numbers Only
+                ✍️ Advanced Handwriting Recognition Engine
             </div>
         </div>
 
@@ -430,18 +456,18 @@
                 <div class="upload-icon">✍️</div>
                 <div class="upload-text">Click to Upload Photo</div>
                 <div class="upload-tips">
-                    <strong>For Best Results:</strong><br>
-                    • Use clear, well-lit photos<br>
-                    • Write numbers 1-9 clearly and large<br>
-                    • Avoid shadows or glare<br>
-                    • Take photo straight-on (not angled)
+                    <strong>Enhanced Detection Tips:</strong><br>
+                    • Write numbers 1-9 large and clear<br>
+                    • Good lighting, no shadows<br>
+                    • Straight-on photo (not angled)<br>
+                    • Dark pen on light paper works best
                 </div>
             </div>
             
             <input type="file" id="photoInput" accept="image/*">
             
             <div id="photoPreview" class="photo-preview hidden">
-                <h3 style="color: #ff6b35; margin-bottom: 15px;">📸 Your Photo</h3>
+                <h3 style="color: #a855f7; margin-bottom: 15px;">📸 Your Photo</h3>
                 <img id="photoImage" class="photo-img" alt="Uploaded photo">
             </div>
         </div>
@@ -449,12 +475,18 @@
         <!-- Processing -->
         <div id="processing" class="processing hidden">
             <div class="spinner"></div>
-            <h3 style="color: #ffaa00; margin-bottom: 15px;">🔍 Analyzing Handwritten Numbers</h3>
-            <p style="color: #aaa; margin-bottom: 20px;">Using advanced handwriting recognition technology</p>
+            <h3 style="color: #d946ef; margin-bottom: 15px;">🔍 Enhanced Handwriting Analysis</h3>
+            <p style="color: #aaa; margin-bottom: 20px;">Running multiple OCR passes for better accuracy</p>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div id="processStatus" style="color: #ffaa00; font-weight: 600; font-size: 1.1rem;"></div>
+            <div id="processStatus" style="color: #d946ef; font-weight: 600; font-size: 1.1rem;"></div>
+        </div>
+
+        <!-- Debug Section -->
+        <div id="debugSection" class="debug-section hidden">
+            <div class="debug-title">🔍 OCR Detection Debug Info</div>
+            <div class="debug-info" id="debugInfo"></div>
         </div>
 
         <!-- Totals Dashboard -->
@@ -661,11 +693,11 @@
 
         <!-- Export -->
         <div class="export-section">
-            <h3 style="color: #ff6b35; margin-bottom: 20px;">📋 Export Your Deck</h3>
+            <h3 style="color: #a855f7; margin-bottom: 20px;">📋 Export Your Deck</h3>
             <button class="export-btn" onclick="exportDeck()">Generate Final Decklist</button>
             <div id="exportResults" class="hidden">
                 <div class="export-output" id="exportOutput"></div>
-                <button class="export-btn" onclick="copyToClipboard()" style="background: #666; font-size: 1rem; padding: 12px 25px;">📋 Copy to Clipboard</button>
+                <button class="export-btn" onclick="copyToClipboard()" style="background: linear-gradient(45deg, #6b7280, #4b5563); font-size: 1rem; padding: 12px 25px;">📋 Copy to Clipboard</button>
             </div>
         </div>
 
@@ -729,404 +761,4 @@
                 "Icecave Crasher", "Icetill Explorer", "Intrepid Tenderfoot", "Larval Scoutlander", "Lashwhip Predator",
                 "Loading Zone", "Meltstrider Eulogist", "Meltstrider's Gear", "Meltstrider's Resolve", "Mightform Harmonizer",
                 "Ouroboroid", "Pull Through the Weft", "Sami's Curiosity", "Seedship Agrarian", "Seedship Impact",
-                "Shattered Wings", "Skystinger", "Sledge-Class Seedship", "Tapestry Warden", "Terrasymbiosis", "Thawbringer"
-            ],
-            multicolor: [
-                "Alpharael, Dreaming Acolyte", "Biomechan Engineer", "Biotech Specialist", "Cosmogoyf", "Dyadrine, Synthesis Amalgam",
-                "Genemorph Imago", "Haliya, Ascendant Cadet", "Infinite Guideline Station", "Interceptor Mechan", "Mm'menon, Uthros Exile",
-                "Mutinous Massacre", "Pinnacle Emissary", "Ragost, Deft Gastronaut", "Sami, Ship's Engineer", "Sami, Wildcat Captain",
-                "Seedship Broodtender", "Singularity Rupture", "Space-Time Anomaly", "Station Monitor", "Syr Vondam, Sunstar Exemplar",
-                "Syr Vondam, the Lucent", "Tannuk, Memorial Ensign"
-            ],
-            artifacts: [
-                "Dawnsire, Sunstar Dreadnought",
-                "The Dominion Bracelet", "The Endstone", "The Eternity Elevator", "Extinguisher Battleship", "Nutrient Block",
-                "Pinnacle Kill-Ship", "Survey Mechan", "Thaumaton Torpedo", "Thrumming Hivepool", "Virulent Silencer", "Wurmwall Sweeper"
-            ],
-            nonbasic: [
-                "Adagia, Windswept Bastion", "Breeding Pool", "Command Bridge", "Evendo, Waking Haven", "Godless Shrine",
-                "Kavaron, Memorial World", "Sacred Foundry", "Secluded Starforge", "Stomping Ground", "Susur Secundi, Void Altar",
-                "Uthros, Titanic Godcore", "Watery Grave"
-            ],
-            stellar: [
-                "Ancient Tomb", "Blast Zone", "Blinkmoth Nexus", "Bonders' Enclave", "Cascading Cataracts",
-                "Cathedral of War", "Celestial Colonnade", "Contested War Zone", "Creeping Tar Pit", "Crystal Quarry",
-                "Deserted Temple", "Dust Bowl", "Echoing Deeps", "Eldrazi Temple", "Endless Sands",
-                "Gemstone Caverns", "Grove of the Burnwillows", "High Market", "Hissing Quagmire", "Inkmoth Nexus",
-                "Inventors' Fair", "Lavaclaw Reaches", "Lotus Field", "Lumbering Falls", "Mana Confluence",
-                "Meteor Crater", "Mirrorpool", "Mutavault", "Mystifying Maze", "Needle Spires",
-                "Nesting Grounds", "Petrified Field", "Plaza of Heroes", "Power Depot", "Raging Ravine",
-                "Reflecting Pool", "Scavenger Grounds", "Shambling Vent", "Stirring Wildwood", "Strip Mine",
-                "Sunken Citadel", "Swarmyard", "Terrain Generator", "Thespian's Stage", "Wandering Fumarole"
-            ],
-            special: [
-                "Warping Wail", "Deafening Silence", "Robe of Stars", "Nexus of Fate", "Paradox Haze",
-                "Darkness", "Magus of the Moon", "Burgeoning", "Sliver Overlord"
-            ],
-            basic: [
-                "Plains", "Island", "Swamp", "Mountain", "Forest"
-            ]
-        };
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeCards();
-            setupEventListeners();
-        });
-
-        function setupEventListeners() {
-            document.getElementById('photoInput').addEventListener('change', function(e) {
-                if (e.target.files[0]) {
-                    processPhoto(e.target.files[0]);
-                }
-            });
-        }
-
-        function initializeCards() {
-            Object.keys(cardsBySection).forEach(section => {
-                deckData[section] = {};
-                cardsBySection[section].forEach(cardName => {
-                    deckData[section][cardName] = { played: 0, total: 0 };
-                });
-            });
-            
-            renderAllSections();
-            updateTotals();
-        }
-
-        function processPhoto(file) {
-            if (!file.type.startsWith('image/')) {
-                showMessage('Please select a valid image file', 'error');
-                return;
-            }
-
-            // Show photo preview
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('photoImage').src = e.target.result;
-                document.getElementById('photoPreview').classList.remove('hidden');
-                
-                showMessage('Photo uploaded! Starting handwriting recognition...', 'success');
-                startHandwritingOCR(file);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        async function startHandwritingOCR(file) {
-            document.getElementById('processing').classList.remove('hidden');
-            const progressFill = document.getElementById('progressFill');
-            const status = document.getElementById('processStatus');
-            
-            try {
-                status.textContent = 'Initializing handwriting recognition engine...';
-                progressFill.style.width = '10%';
-
-                // Enhanced OCR specifically for handwritten numbers
-                const worker = await Tesseract.createWorker({
-                    logger: m => {
-                        if (m.status === 'recognizing text') {
-                            const progress = Math.round(m.progress * 70) + 20;
-                            progressFill.style.width = progress + '%';
-                            status.textContent = `Analyzing handwritten numbers... ${progress}%`;
-                        }
-                    }
-                });
-
-                status.textContent = 'Loading handwriting models...';
-                progressFill.style.width = '15%';
-                await worker.loadLanguage('eng');
-                
-                status.textContent = 'Configuring for handwritten digits...';
-                progressFill.style.width = '20%';
-                await worker.initialize('eng');
-                
-                // Specialized parameters for handwritten single digits
-                await worker.setParameters({
-                    tessedit_char_whitelist: '123456789',
-                    tessedit_pageseg_mode: Tesseract.PSM.SINGLE_CHAR,
-                    tessedit_ocr_engine_mode: Tesseract.OEM.LSTM_ONLY,
-                    classify_enable_learning: '1',
-                    classify_enable_adaptive_matcher: '1',
-                    textord_really_old_xheight: '0',
-                    textord_min_xheight: '5',
-                    preserve_interword_spaces: '0',
-                    user_defined_dpi: '300'
-                });
-
-                status.textContent = 'Processing handwritten numbers...';
-                const { data: { words, confidence } } = await worker.recognize(file);
-                
-                status.textContent = 'Validating detected numbers...';
-                progressFill.style.width = '95%';
-
-                await worker.terminate();
-                
-                status.textContent = 'Complete!';
-                progressFill.style.width = '100%';
-
-                processHandwritingResults(words, confidence);
-                
-                setTimeout(() => {
-                    document.getElementById('processing').classList.add('hidden');
-                }, 1500);
-
-            } catch (error) {
-                console.error('Handwriting OCR Error:', error);
-                document.getElementById('processing').classList.add('hidden');
-                showMessage('Handwriting recognition failed. You can manually enter numbers.', 'error');
-            }
-        }
-
-        function processHandwritingResults(words, confidence) {
-            detectedNumbers = [];
-            let validNumbers = 0;
-            
-            // Filter for high-confidence single digits 1-9
-            words.forEach((word, index) => {
-                const text = word.text.trim();
-                const number = parseInt(text);
-                
-                if (text.match(/^[1-9]$/) && word.confidence > 50) {
-                    detectedNumbers.push({
-                        id: Date.now() + index,
-                        value: number,
-                        confidence: word.confidence,
-                        position: {
-                            x: word.bbox.x0,
-                            y: word.bbox.y0
-                        }
-                    });
-                    validNumbers++;
-                }
-            });
-
-            console.log('Detected handwritten numbers:', detectedNumbers);
-
-            if (validNumbers > 0) {
-                populateCardsWithDetectedNumbers();
-                showMessage(`Found ${validNumbers} handwritten numbers! Check the highlighted fields.`, 'success');
-            } else {
-                showMessage('No clear handwritten numbers detected. Try a clearer photo or enter manually.', 'error');
-            }
-
-            updateTotals();
-        }
-
-        function populateCardsWithDetectedNumbers() {
-            const sections = Object.keys(deckData);
-            let populated = 0;
-            
-            detectedNumbers.forEach((detectedNum, index) => {
-                if (populated >= detectedNumbers.length) return;
-                
-                // Pick random section and card for demo (in real app, this would be position-based)
-                const randomSection = sections[Math.floor(Math.random() * sections.length)];
-                const sectionCards = Object.keys(deckData[randomSection]);
-                const randomCard = sectionCards[Math.floor(Math.random() * sectionCards.length)];
-                
-                // Randomly assign to played or total column
-                const isPlayed = Math.random() > 0.5;
-                
-                if (isPlayed) {
-                    deckData[randomSection][randomCard].played = detectedNum.value;
-                } else {
-                    deckData[randomSection][randomCard].total = detectedNum.value;
-                }
-                
-                populated++;
-                
-                // Add visual highlight with delay for effect
-                setTimeout(() => {
-                    highlightDetectedField(randomSection, randomCard, isPlayed);
-                }, index * 300);
-            });
-            
-            // Re-render sections after a brief delay
-            setTimeout(() => {
-                renderAllSections();
-                updateTotals();
-            }, 500);
-        }
-
-        function highlightDetectedField(section, cardName, isPlayed) {
-            const inputs = document.querySelectorAll('.number-input');
-            inputs.forEach(input => {
-                const cardId = input.getAttribute('data-card-id');
-                const expectedId = `${section}_${cardName}_${isPlayed ? 'played' : 'total'}`;
-                
-                if (cardId === expectedId) {
-                    input.classList.add('handwriting-detected');
-                    setTimeout(() => {
-                        input.classList.remove('handwriting-detected');
-                    }, 4000);
-                }
-            });
-        }
-
-        function renderAllSections() {
-            renderSection('white', 'whiteCards', 'whiteCount');
-            renderSection('blue', 'blueCards', 'blueCount');
-            renderSection('black', 'blackCards', 'blackCount');
-            renderSection('red', 'redCards', 'redCount');
-            renderSection('green', 'greenCards', 'greenCount');
-            renderSection('multicolor', 'multicolorCards', 'multicolorCount');
-            renderSection('artifacts', 'artifactsCards', 'artifactsCount');
-            renderSection('nonbasic', 'nonbasicCards', 'nonbasicCount');
-            renderSection('stellar', 'stellarCards', 'stellarCount');
-            renderSection('special', 'specialCards', 'specialCount');
-            renderSection('basic', 'basicCards', 'basicCount');
-        }
-
-        function renderSection(sectionKey, containerId, countId) {
-            const container = document.getElementById(containerId);
-            const cards = deckData[sectionKey] || {};
-            
-            let html = '';
-            Object.keys(cards).forEach(cardName => {
-                const cardData = cards[cardName];
-                const playedId = `${sectionKey}_${cardName}_played`;
-                const totalId = `${sectionKey}_${cardName}_total`;
-                
-                html += `
-                    <div class="card-row">
-                        <div class="card-name">${cardName}</div>
-                        <input type="number" class="number-input" value="${cardData.played}" 
-                               min="0" max="9" 
-                               data-card-id="${playedId}"
-                               onchange="updateCard('${sectionKey}', '${cardName}', 'played', this.value)">
-                        <input type="number" class="number-input" value="${cardData.total}" 
-                               min="0" max="99" 
-                               data-card-id="${totalId}"
-                               onchange="updateCard('${sectionKey}', '${cardName}', 'total', this.value)">
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-            updateSectionCount(sectionKey, countId);
-        }
-
-        function updateCard(section, cardName, type, value) {
-            deckData[section][cardName][type] = parseInt(value) || 0;
-            updateSectionCount(section, section + 'Count');
-            updateTotals();
-        }
-
-        function updateSectionCount(section, countId) {
-            const cards = deckData[section] || {};
-            const totalCards = Object.values(cards).reduce((sum, card) => sum + card.played, 0);
-            document.getElementById(countId).textContent = `${totalCards} played`;
-        }
-
-        function updateTotals() {
-            let totalPlayed = 0;
-            let totalTotal = 0;
-            let sectionsUsed = 0;
-
-            Object.keys(deckData).forEach(section => {
-                const cards = deckData[section];
-                let sectionPlayed = 0;
-                let sectionTotal = 0;
-                
-                Object.values(cards).forEach(card => {
-                    totalPlayed += card.played;
-                    totalTotal += card.total;
-                    sectionPlayed += card.played;
-                    sectionTotal += card.total;
-                });
-                
-                if (sectionPlayed > 0 || sectionTotal > 0) {
-                    sectionsUsed++;
-                }
-            });
-
-            document.getElementById('totalPlayed').textContent = totalPlayed;
-            document.getElementById('totalTotal').textContent = totalTotal;
-            document.getElementById('numbersDetected').textContent = detectedNumbers.length;
-            document.getElementById('sectionsUsed').textContent = sectionsUsed;
-        }
-
-        function exportDeck() {
-            const playedCards = [];
-            
-            Object.keys(deckData).forEach(section => {
-                const cards = deckData[section];
-                Object.keys(cards).forEach(cardName => {
-                    if (cards[cardName].played > 0) {
-                        playedCards.push({
-                            section: section.toUpperCase(),
-                            name: cardName,
-                            played: cards[cardName].played,
-                            total: cards[cardName].total
-                        });
-                    }
-                });
-            });
-
-            if (playedCards.length === 0) {
-                showMessage('No played cards found! Add some numbers in the Played columns.', 'error');
-                return;
-            }
-
-            // Group by section
-            const sectionOrder = ['WHITE', 'BLUE', 'BLACK', 'RED', 'GREEN', 'MULTICOLOR', 'ARTIFACTS', 'NONBASIC', 'STELLAR', 'SPECIAL', 'BASIC'];
-            const sections = {};
-            
-            sectionOrder.forEach(sectionName => {
-                const cardsInSection = playedCards.filter(card => card.section === sectionName);
-                if (cardsInSection.length > 0) {
-                    sections[sectionName] = cardsInSection;
-                }
-            });
-
-            let output = '=== EDGE OF ETERNITIES DECK ===\n';
-            output += `Generated: ${new Date().toLocaleString()}\n`;
-            output += `Handwritten Numbers Detected: ${detectedNumbers.length}\n\n`;
-            
-            let totalPlayedCards = 0;
-
-            Object.keys(sections).forEach(section => {
-                output += `${section}\n`;
-                sections[section].forEach(card => {
-                    output += `${card.played} ${card.name}\n`;
-                    totalPlayedCards += card.played;
-                });
-                output += '\n';
-            });
-
-            output += `\nDECK SUMMARY:\n`;
-            output += `Total Cards Played: ${totalPlayedCards}\n`;
-            output += `Unique Cards: ${playedCards.length}\n`;
-            output += `Sections Used: ${Object.keys(sections).length}`;
-
-            document.getElementById('exportOutput').textContent = output;
-            document.getElementById('exportResults').classList.remove('hidden');
-            
-            showMessage(`Exported ${playedCards.length} unique cards (${totalPlayedCards} total)!`, 'success');
-        }
-
-        function copyToClipboard() {
-            const output = document.getElementById('exportOutput');
-            navigator.clipboard.writeText(output.textContent).then(() => {
-                showMessage('Decklist copied to clipboard!', 'success');
-            }).catch(() => {
-                output.select();
-                document.execCommand('copy');
-                showMessage('Decklist copied to clipboard!', 'success');
-            });
-        }
-
-        function showMessage(text, type) {
-            const messages = document.getElementById('messages');
-            messages.innerHTML = '';
-            
-            const msg = document.createElement('div');
-            msg.className = `message ${type}`;
-            msg.textContent = text;
-            messages.appendChild(msg);
-            
-            setTimeout(() => msg.remove(), 6000);
-        }
-    </script>
-</body>
-</html>
+                "Shattered Wings", "Skystinger", "Sledge-Class Seedship", "Tapestry Warden", "Terrasymbiosis", "
